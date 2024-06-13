@@ -3,7 +3,6 @@ import { Input } from "@/shared/ui/input.tsx";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectTrigger,
   SelectItem,
 } from "@/shared/ui/select.tsx";
@@ -99,6 +98,20 @@ export const Resonance = () => {
   const [ResistanceFactor, setResistanceFactor] = useState<number>(
     ResistanceFactorSelector[0].key,
   );
+
+  const [FrequencyFactorText, setFrequencyFactorText] = useState<string>(
+    FrequencyFactorSelector[0].value,
+  );
+  const [InductanceFactorText, setInductanceFactorText] = useState<string>(
+    InductanceFactorSelector[0].value,
+  );
+  const [СapacitorFactorText, setСapacitorFactorText] = useState<string>(
+    СapacitorFactorSelector[0].value,
+  );
+  const [ResistanceFactorText, setResistanceFactorText] = useState<string>(
+    ResistanceFactorSelector[0].value,
+  );
+
   const onChangeInputFrequency = (e: any) => {
     setFrequency(Number(e.target.value));
   };
@@ -115,40 +128,62 @@ export const Resonance = () => {
     setResistance(Number(e.target.value));
   };
 
-  const onChangeSelectFrequency = (e: any) => {
-    console.log(e);
-    // setFrequencyFactor(Number(e));
+  const onChangeSelectFrequency = (e: string) => {
+    FrequencyFactorSelector.forEach((item) => {
+      if (item.value === e) {
+        setFrequencyFactor(item.key);
+        setFrequencyFactorText(item.value);
+      }
+    });
   };
 
-  const onChangeSelectInductance = (e: number) => {
-    // setInductanceFactor(Number(e));
+  const onChangeSelectInductance = (e: string) => {
+    InductanceFactorSelector.forEach((item) => {
+      if (item.value === e) {
+        setInductanceFactor(item.key);
+        setInductanceFactorText(item.value);
+      }
+    });
   };
 
-  const onChangeSelectСapacitor = (e: number) => {
-    // setСapacitorFactor(Number(e));
+  const onChangeSelectСapacitor = (e: string) => {
+    СapacitorFactorSelector.forEach((item) => {
+      if (item.value === e) {
+        setСapacitorFactor(item.key);
+        setСapacitorFactorText(item.value);
+      }
+    });
   };
 
-  const onChangeSelectResistance = (e: number) => {
-    // setResistanceFactor(Number(e));
+  const onChangeSelectResistance = (e: string) => {
+    ResistanceFactorSelector.forEach((item) => {
+      if (item.value === e) {
+        setResistanceFactor(item.key);
+        setResistanceFactorText(item.value);
+      }
+    });
   };
 
-  useEffect(() => {
-    // console.log(Frequency, Inductance, Сapacitor, Resistance);
-  }, [
-    Frequency,
-    Inductance,
-    Сapacitor,
-    Resistance,
-    FrequencyFactor,
-    InductanceFactor,
-    СapacitorFactor,
-    ResistanceFactor,
-  ]);
+  // useEffect(() => {
+  //   // console.log(Frequency, Inductance, Сapacitor, Resistance);
+  // }, [
+  //   Frequency,
+  //   Inductance,
+  //   Сapacitor,
+  //   Resistance,
+  //   FrequencyFactor,
+  //   InductanceFactor,
+  //   СapacitorFactor,
+  //   ResistanceFactor,
+  // ]);
 
   return (
     <div>
-      <div className={"flex flex-row gap-2"}>
-        <div className={"w-[200px]"}>{"Частота:"}</div>
+      <div
+        className={"flex flex-row"}
+        style={{ width: "500px", height: "50px" }}
+      >
+        <span>{"Частота:"}</span>
         <Input
           className={"w-[200px]"}
           type="number"
@@ -161,18 +196,21 @@ export const Resonance = () => {
           defaultValue={FrequencyFactorSelector[0].value}
           onValueChange={onChangeSelectFrequency}
         >
-          <SelectTrigger className="w-200"></SelectTrigger>
+          <SelectTrigger style={{ width: "50px", height: "20px" }}>
+            {FrequencyFactorText}
+          </SelectTrigger>
           <SelectContent>
-            <SelectGroup>
-              {FrequencyFactorSelector.map((item) => {
-                return <SelectItem value={item.value}>{item.value}</SelectItem>;
-              })}
-            </SelectGroup>
+            {FrequencyFactorSelector.map((item) => {
+              return <SelectItem value={item.value}>{item.value}</SelectItem>;
+            })}
           </SelectContent>
         </Select>
       </div>
-      <div className={"flex flex-row gap-2"}>
-        <div className={"mr-5"}>{"Индуктивность:"}</div>
+      <div
+        className={"flex flex-row"}
+        style={{ width: "500px", height: "50px" }}
+      >
+        <span>{"Индуктивность:"}</span>
         <Input
           className={"w-[200px]"}
           type="number"
@@ -181,9 +219,25 @@ export const Resonance = () => {
           value={Inductance}
           onChange={onChangeInputInductance}
         ></Input>
+        <Select
+          defaultValue={InductanceFactorSelector[0].value}
+          onValueChange={onChangeSelectInductance}
+        >
+          <SelectTrigger style={{ width: "50px", height: "20px" }}>
+            {InductanceFactorText}
+          </SelectTrigger>
+          <SelectContent>
+            {InductanceFactorSelector.map((item) => {
+              return <SelectItem value={item.value}>{item.value}</SelectItem>;
+            })}
+          </SelectContent>
+        </Select>
       </div>
-      <div className={"flex flex-row gap-2"}>
-        <div className={"mr-5"}>{"Конденсатор:"}</div>
+      <div
+        className={"flex flex-row"}
+        style={{ width: "500px", height: "50px" }}
+      >
+        <span>{"Конденсатор:"}</span>
         <Input
           className={"w-[200px]"}
           type="number"
@@ -192,9 +246,25 @@ export const Resonance = () => {
           value={Сapacitor}
           onChange={onChangeInputСapacitor}
         ></Input>
+        <Select
+          defaultValue={СapacitorFactorSelector[0].value}
+          onValueChange={onChangeSelectСapacitor}
+        >
+          <SelectTrigger style={{ width: "50px", height: "20px" }}>
+            {СapacitorFactorText}
+          </SelectTrigger>
+          <SelectContent>
+            {СapacitorFactorSelector.map((item) => {
+              return <SelectItem value={item.value}>{item.value}</SelectItem>;
+            })}
+          </SelectContent>
+        </Select>
       </div>
-      <div className={"flex flex-row gap-2"}>
-        <div className={"mr-5"}>{"Сопротивление:"}</div>
+      <div
+        className={"flex flex-row"}
+        style={{ width: "500px", height: "50px" }}
+      >
+        <span>{"Сопротивление:"}</span>
         <Input
           className={"w-[200px]"}
           type="number"
@@ -203,6 +273,19 @@ export const Resonance = () => {
           value={Resistance}
           onChange={onChangeInputResistance}
         ></Input>
+        <Select
+          defaultValue={ResistanceFactorSelector[0].value}
+          onValueChange={onChangeSelectResistance}
+        >
+          <SelectTrigger style={{ width: "50px", height: "20px" }}>
+            {ResistanceFactorText}
+          </SelectTrigger>
+          <SelectContent>
+            {ResistanceFactorSelector.map((item) => {
+              return <SelectItem value={item.value}>{item.value}</SelectItem>;
+            })}
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );
