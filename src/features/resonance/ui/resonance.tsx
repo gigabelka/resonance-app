@@ -6,6 +6,8 @@ import {
   SelectTrigger,
   SelectItem,
 } from "@/shared/ui/select.tsx";
+import { RadioGroup, RadioGroupItem } from "@/shared/ui/radio-group";
+import { Button } from "@/shared/ui/button.tsx";
 import { useCallback, useState } from "react";
 
 type Value =
@@ -126,6 +128,8 @@ export const Resonance = () => {
     key: number;
   }>(ResistanceFactorSelector[0]);
 
+  const [Radio, setRadio] = useState<Value>("Frequency");
+
   // console.log({
   //   frequency: Frequency,
   //   inductance: Inductance,
@@ -194,9 +198,8 @@ export const Resonance = () => {
   };
 
   const onCalculate = useCallback(
-    (value: number, type: Value) => {
-      // eslint-disable-next-line prefer-const
-      let data: Calc = {
+    () => {
+      const data: Calc = {
         frequency: Frequency,
         inductance: Inductance,
         capacitor: Сapacitor,
@@ -207,25 +210,13 @@ export const Resonance = () => {
         resistanceFactor: ResistanceFactor.key,
       };
 
-      if (type === "Frequency") {
-        data.frequency = value;
+      if (Radio === "Frequency") {
+        onCalculateFrequency(data);
+      } else if (Radio === "Inductance") {
         onCalculateInductance(data);
+      } else if (Radio === "Сapacitor") {
         onCalculateСapacitor(data);
-      } else if (type === "FrequencyFactor") {
-        data.frequencyFactor = value;
-        onCalculateInductance(data);
-        onCalculateСapacitor(data);
-      } else if (type === "Inductance") {
-        //
-      } else if (type === "InductanceFactor") {
-        //
-      } else if (type === "Сapacitor") {
-        //
-      } else if (type === "СapacitorFactor") {
-        //
-      } else if (type === "Resistance") {
-        //
-      } else if (type === "ResistanceFactor") {
+      } else if (Radio === "Resistance") {
         //
       }
     },
@@ -239,14 +230,13 @@ export const Resonance = () => {
       InductanceFactor,
       СapacitorFactor,
       ResistanceFactor,
+      Radio,
     ],
   );
 
   const onChangeFrequency = (e: any) => {
     if (e.target.value && e.target.value !== "0") {
-      const Val: number = Number(e.target.value);
-      setFrequency(Val);
-      onCalculate(Val, "Frequency");
+      setFrequency(Number(e.target.value));
     }
   };
 
@@ -272,8 +262,6 @@ export const Resonance = () => {
     FrequencyFactorSelector.forEach((item) => {
       if (item.value === e) {
         setFrequencyFactor(item);
-        const Val: number = Number(item.key);
-        onCalculate(Val, "FrequencyFactor");
       }
     });
   };
@@ -300,6 +288,10 @@ export const Resonance = () => {
         setResistanceFactor(item);
       }
     });
+  };
+
+  const onChangeRadio = (type: Value) => {
+    setRadio(type);
   };
 
   return (
@@ -412,6 +404,25 @@ export const Resonance = () => {
           </SelectContent>
         </Select>
       </div>
+      <RadioGroup defaultValue="Frequency" onValueChange={onChangeRadio}>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="Frequency" />
+          Frequency
+        </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="Inductance" />
+          Inductance
+        </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="Сapacitor" />
+          Сapacitor
+        </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="Resistance" />
+          Resistance
+        </div>
+      </RadioGroup>
+      <Button onClick={onCalculate}>Рассчитать</Button>
     </div>
   );
 };
