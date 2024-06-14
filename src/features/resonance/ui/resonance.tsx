@@ -183,10 +183,26 @@ export const Resonance = () => {
 
   const onCalculate = useCallback(
     (value: number, type: Value) => {
+      // eslint-disable-next-line prefer-const
+      let data: Calc = {
+        frequency: Frequency,
+        inductance: Inductance,
+        capacitor: Сapacitor,
+        resistance: Resistance,
+        frequencyFactor: FrequencyFactor.key,
+        inductanceFactor: InductanceFactor.key,
+        capacitorFactor: СapacitorFactor.key,
+        resistanceFactor: ResistanceFactor.key,
+      };
+
       if (type === "Frequency") {
-        //
+        data.frequency = value;
+        onCalculateInductance(data);
+        onCalculateСapacitor(data);
       } else if (type === "FrequencyFactor") {
-        //
+        data.frequencyFactor = value;
+        onCalculateInductance(data);
+        onCalculateСapacitor(data);
       } else if (type === "Inductance") {
         //
       } else if (type === "InductanceFactor") {
@@ -214,39 +230,43 @@ export const Resonance = () => {
     ],
   );
 
-  const onChangeInputFrequency = (e: any) => {
+  const onChangeFrequency = (e: any) => {
     if (e.target.value) {
-      setFrequency(Number(e.target.value));
+      const Val: number = Number(e.target.value);
+      setFrequency(Val);
+      onCalculate(Val, "Frequency");
     }
   };
 
-  const onChangeInputInductance = (e: any) => {
+  const onChangeInductance = (e: any) => {
     if (e.target.value) {
       setInductance(Number(e.target.value));
     }
   };
 
-  const onChangeInputСapacitor = (e: any) => {
+  const onChangeСapacitor = (e: any) => {
     if (e.target.value) {
       setСapacitor(Number(e.target.value));
     }
   };
 
-  const onChangeInputResistance = (e: any) => {
+  const onChangeResistance = (e: any) => {
     if (e.target.value) {
       setResistance(Number(e.target.value));
     }
   };
 
-  const onChangeSelectFrequency = (e: string) => {
+  const onSelectFrequency = (e: string) => {
     FrequencyFactorSelector.forEach((item) => {
       if (item.value === e) {
         setFrequencyFactor(item);
+        const Val: number = Number(item.key);
+        onCalculate(Val, "FrequencyFactor");
       }
     });
   };
 
-  const onChangeSelectInductance = (e: string) => {
+  const onSelectInductance = (e: string) => {
     InductanceFactorSelector.forEach((item) => {
       if (item.value === e) {
         setInductanceFactor(item);
@@ -254,7 +274,7 @@ export const Resonance = () => {
     });
   };
 
-  const onChangeSelectСapacitor = (e: string) => {
+  const onSelectСapacitor = (e: string) => {
     СapacitorFactorSelector.forEach((item) => {
       if (item.value === e) {
         setСapacitorFactor(item);
@@ -262,7 +282,7 @@ export const Resonance = () => {
     });
   };
 
-  const onChangeSelectResistance = (e: string) => {
+  const onSelectResistance = (e: string) => {
     ResistanceFactorSelector.forEach((item) => {
       if (item.value === e) {
         setResistanceFactor(item);
@@ -283,11 +303,11 @@ export const Resonance = () => {
           min={0}
           max={1000000000000}
           value={Frequency}
-          onChange={onChangeInputFrequency}
+          onChange={onChangeFrequency}
         ></Input>
         <Select
           defaultValue={FrequencyFactorSelector[0].value}
-          onValueChange={onChangeSelectFrequency}
+          onValueChange={onSelectFrequency}
         >
           <SelectTrigger style={{ width: "50px" }}>
             {FrequencyFactor.value}
@@ -310,11 +330,11 @@ export const Resonance = () => {
           min={0}
           max={1000000000000}
           value={Inductance}
-          onChange={onChangeInputInductance}
+          onChange={onChangeInductance}
         ></Input>
         <Select
           defaultValue={InductanceFactorSelector[0].value}
-          onValueChange={onChangeSelectInductance}
+          onValueChange={onSelectInductance}
         >
           <SelectTrigger style={{ width: "50px" }}>
             {InductanceFactor.value}
@@ -337,11 +357,11 @@ export const Resonance = () => {
           min={0}
           max={1000000000000}
           value={Сapacitor}
-          onChange={onChangeInputСapacitor}
+          onChange={onChangeСapacitor}
         ></Input>
         <Select
           defaultValue={СapacitorFactorSelector[0].value}
-          onValueChange={onChangeSelectСapacitor}
+          onValueChange={onSelectСapacitor}
         >
           <SelectTrigger style={{ width: "50px" }}>
             {СapacitorFactor.value}
@@ -364,11 +384,11 @@ export const Resonance = () => {
           min={0}
           max={1000000000000}
           value={Resistance}
-          onChange={onChangeInputResistance}
+          onChange={onChangeResistance}
         ></Input>
         <Select
           defaultValue={ResistanceFactorSelector[0].value}
-          onValueChange={onChangeSelectResistance}
+          onValueChange={onSelectResistance}
         >
           <SelectTrigger style={{ width: "50px" }}>
             {ResistanceFactor.value}
