@@ -18,7 +18,20 @@ type Value =
   | "СapacitorFactor"
   | "ResistanceFactor";
 
+type Calc = {
+  frequency: number;
+  inductance: number;
+  capacitor: number;
+  resistance: number;
+  frequencyFactor: number;
+  inductanceFactor: number;
+  capacitorFactor: number;
+  resistanceFactor: number;
+};
+
 export const Resonance = () => {
+  const [Pi] = useState<number>(3.14159265358979);
+
   const [FrequencyFactorSelector] = useState<{ value: string; key: number }[]>([
     {
       value: "Гц",
@@ -91,10 +104,10 @@ export const Resonance = () => {
     ],
   );
 
-  const [Frequency, setFrequency] = useState<number>(0);
-  const [Inductance, setInductance] = useState<number>(0);
-  const [Сapacitor, setСapacitor] = useState<number>(0);
-  const [Resistance, setResistance] = useState<number>(0);
+  const [Frequency, setFrequency] = useState<number>(1);
+  const [Inductance, setInductance] = useState<number>(1);
+  const [Сapacitor, setСapacitor] = useState<number>(1);
+  const [Resistance, setResistance] = useState<number>(1);
 
   const [FrequencyFactor, setFrequencyFactor] = useState<{
     value: string;
@@ -112,6 +125,61 @@ export const Resonance = () => {
     value: string;
     key: number;
   }>(ResistanceFactorSelector[0]);
+
+  const onCalculateFrequency = (val: Calc) => {
+    if (val.inductance !== 0 && val.capacitor !== 0) {
+      const Frequency: number = Number(
+        (
+          1 /
+          (2 *
+            Pi *
+            Math.sqrt(
+              val.inductance *
+                val.inductanceFactor *
+                val.capacitor *
+                val.capacitorFactor,
+            ))
+        ).toFixed(6),
+      );
+      setFrequency(Frequency);
+    }
+  };
+
+  const onCalculateInductance = (val: Calc) => {
+    if (val.frequency !== 0 && val.capacitor !== 0) {
+      const Inductance: number = Number(
+        (
+          1 /
+          (4 *
+            Math.pow(Pi, 2) *
+            Math.pow(val.frequency * val.frequency, 2) *
+            val.capacitor *
+            val.capacitorFactor)
+        ).toFixed(6),
+      );
+      setInductance(Inductance);
+    }
+  };
+
+  const onCalculateСapacitor = (val: Calc) => {
+    if (val.frequency !== 0 && val.inductance !== 0) {
+      const Сapacitor: number = Number(
+        (
+          1 /
+          (4 *
+            Math.pow(Pi, 2) *
+            Math.pow(val.frequency * val.frequency, 2) *
+            val.inductance *
+            val.inductanceFactor)
+        ).toFixed(6),
+      );
+      setСapacitor(Сapacitor);
+    }
+  };
+
+  const onCalculateResistance = (val: Calc) => {
+    //
+  };
 
   const onCalculate = useCallback(
     (value: number, type: Value) => {
