@@ -50,40 +50,40 @@ export const Resonance = () => {
   const [InductanceFactorSelector] = useState<{ value: string; key: number }[]>(
     [
       {
-        value: "мкГн",
-        key: 0.000001,
+        value: "Гн",
+        key: 1,
       },
       {
         value: "мГн",
         key: 0.001,
       },
       {
-        value: "Гн",
-        key: 1,
+        value: "мкГн",
+        key: 0.000001,
       },
     ],
   );
 
   const [СapacitorFactorSelector] = useState<{ value: string; key: number }[]>([
     {
-      value: "пФ",
-      key: 0.000000000001,
-    },
-    {
-      value: "нФ",
-      key: 0.000000001,
-    },
-    {
-      value: "мкФ",
-      key: 0.000001,
+      value: "Ф",
+      key: 1,
     },
     {
       value: "мФ",
       key: 0.001,
     },
     {
-      value: "Ф",
-      key: 1,
+      value: "мкФ",
+      key: 0.000001,
+    },
+    {
+      value: "нФ",
+      key: 0.000000001,
+    },
+    {
+      value: "пФ",
+      key: 0.000000000001,
     },
   ]);
 
@@ -126,6 +126,17 @@ export const Resonance = () => {
     key: number;
   }>(ResistanceFactorSelector[0]);
 
+  // console.log({
+  //   frequency: Frequency,
+  //   inductance: Inductance,
+  //   capacitor: Сapacitor,
+  //   resistance: Resistance,
+  //   frequencyFactor: FrequencyFactor.key,
+  //   inductanceFactor: InductanceFactor.key,
+  //   capacitorFactor: СapacitorFactor.key,
+  //   resistanceFactor: ResistanceFactor.key,
+  // });
+
   const onCalculateFrequency = (val: Calc) => {
     if (val.inductance !== 0 && val.capacitor !== 0) {
       const Frequency: number = Number(
@@ -163,6 +174,7 @@ export const Resonance = () => {
 
   const onCalculateСapacitor = (val: Calc) => {
     if (val.frequency !== 0 && val.inductance !== 0) {
+      console.log(val);
       const Сapacitor: number = Number(
         (
           1 /
@@ -231,7 +243,7 @@ export const Resonance = () => {
   );
 
   const onChangeFrequency = (e: any) => {
-    if (e.target.value) {
+    if (e.target.value && e.target.value !== "0") {
       const Val: number = Number(e.target.value);
       setFrequency(Val);
       onCalculate(Val, "Frequency");
@@ -239,19 +251,19 @@ export const Resonance = () => {
   };
 
   const onChangeInductance = (e: any) => {
-    if (e.target.value) {
+    if (e.target.value && e.target.value !== "0") {
       setInductance(Number(e.target.value));
     }
   };
 
   const onChangeСapacitor = (e: any) => {
-    if (e.target.value) {
+    if (e.target.value && e.target.value !== "0") {
       setСapacitor(Number(e.target.value));
     }
   };
 
   const onChangeResistance = (e: any) => {
-    if (e.target.value) {
+    if (e.target.value && e.target.value !== "0") {
       setResistance(Number(e.target.value));
     }
   };
